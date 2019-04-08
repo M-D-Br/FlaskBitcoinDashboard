@@ -23,7 +23,7 @@ Download Flask and the Bitcoin RPC tools.
 
 `pip install python-bitcoinrpc`
 
-Now for the Lightning part (based off <a href="https://dev.lightning.community/guides/python-grpc/">this guide</a>.
+Now for the Lightning part (based off <a href="https://dev.lightning.community/guides/python-grpc/">this guide</a>).
 
 `pip install grpcio grpcio-tools googleapis-common-protos`
 
