@@ -7,9 +7,7 @@ import random
 from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
 import rpc_pb2 as ln
 import rpc_pb2_grpc as lnrpc
-import grpc
-import os
-import codecs
+import grpc, os, codecs
 
 
 @app.route('/')
@@ -72,4 +70,22 @@ def index():
          lightning_peers=lightning_peers, offchain_balance=offchain_balance,
          lightning_version=lightning_version, alias=alias)
 
+@app.route('/peerpage')
+def peerpage():
+    try:
+        os.environ["GRPC_SSL_CIPHER_SUITES"] = 'HIGH+ECDSA'
+        with open(os.path.expanduser('~/.lnd/data/chain/bitcoin/{}/admin.macaroon'.format(chaintype_ln)), 'rb') as f:
+            macaroon_bytes = f.read()
+            macaroon = codecs.encode(macaroon_bytes, 'hex')
 
+
+        cert = open(os.path.expanduser('~/.lnd/tls.cert'), 'rb').read()
+        creds = grpc.ssl_channel_credentials(cert)
+        channel = grpc.secure_channel('localhost:10009', creds)
+        stub = lnrpc.LightningStub(channel)
+
+        response = stub.ListPeers(ln.ListPeersRequest(), metadata=[('macaroon', macaroon)])
+        show_current_peers = response.peers
+    except:
+        show_current_peers = "N/A"
+    return render_template('peerpage.html', show_current_peers=show_current_peers)
