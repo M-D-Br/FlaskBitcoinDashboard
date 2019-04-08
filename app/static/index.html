@@ -1,0 +1,215 @@
+<html>
+	<link href="/static/bootstrap.min.css" rel="stylesheet" media="screen">
+ <!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="refresh" content="30" />
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Coreveillance</title>
+
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+  <link href="css/sb-admin-2.min.css" rel="stylesheet">
+</head>
+
+<body id="page-top">
+
+      <div id="content">
+        <div class="container-fluid">
+
+
+            <h1 class="h1 mb-4 mt-4 text-gray-800 text-center">Bitcoin</h1>
+
+
+          <div class="row">
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-primary shadow py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Block Height</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ current_block_height }}</div>
+                    </div>
+                    <div class="col-auto">
+                      <img src="static/img/block.png">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-success shadow py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Peers</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ onchain_peers }}</div>
+                    </div>
+                    <div class="col-auto">
+                      <img src="static/img/peers.png">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-info shadow py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Balance</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ onchain_balance }}</div>
+                    </div>
+                    <div class="col-auto">
+                      <img src="static/img/bit.png">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+           <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-warning shadow py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Version</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ bitcoin_version }}</div>
+                    </div>
+                    <div class="col-auto">
+                      <img src="static/img/software.png">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          
+            
+         <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-primary shadow py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Sync</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ sync_prog }}</div>
+                    </div>
+                      <div class="col-auto">
+                      <img src="static/img/sync.png">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+              
+                <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-success shadow py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Chain</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ chain_type }}</div>
+                    </div>
+                      <div class="col-auto">
+                      <img src="static/img/chain.png">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+            
+          <h1 class="h1 mb-4 text-gray-800 text-center">Lightning</h1>
+                  
+             <div class="row">
+
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-primary shadow py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Channels</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ lightning_channels }}</div>
+                    </div>
+                    <div class="col-auto">
+                      <img src="static/img/channels.png">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-success shadow py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Peers</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ lightning_peers }}</div>
+                    </div>
+                    <div class="col-auto">
+                      <img src="static/img/peers.png">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+           <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-info shadow py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Balance</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ offchain_balance }}</div>
+                    </div>
+                    <div class="col-auto">
+                      <img src="static/img/lightningbit.png">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-warning shadow py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Version</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ lightning_version }}</div>
+                    </div>
+                    <div class="col-auto">
+                      <img src="static/img/software.png">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>          
+        </div>
+      </div>
+    <div class="container-fluid">
+  <div class="row">
+      <div class="col-md-6">
+    		<button type="button" class="btn btn-primary btn-block stretched-link text-xs font-weight-bold text-white text-uppercase mb-3">Send Funds</button>
+    	</div>
+       <div class="col-md-6">
+    		<a type="button" class="btn btn-success btn-block stretched-link text-xs font-weight-bold text-white text-uppercase mb-3" href="{{ url_for('peerpage')}}">Lightning Peers</a>
+    	</div>
+       <div class="col-md-6">
+    		<button type="button" class="btn btn-warning btn-block stretched-link text-xs font-weight-bold text-white text-uppercase mb-3">Manage Channels</button>
+    	</div>
+  </div>
+</div>
+</body>
+</html>
