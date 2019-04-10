@@ -16,13 +16,15 @@ import codecs
 @app.route('/index')
 def index():
 
-    #RPC credentials
+    #RPC Credentials
     rpc_user = ['your bitcoin rpc username']
     rpc_password = ['your bitcoin rpc password']
     rpc_port = ['RPC port']
     allowed_ip = ['IP of the device']
+    #Your Lightning Directory – don't forget the forward slash at the end
+    lnd_dir_location = '[lnd directory location]'
 
-    try:
+     try:
         rpc_connect = AuthServiceProxy("http://{}:{}@{}:{}".format(rpc_user,rpc_password,allowed_ip,rpc_port))
         current_block_height = rpc_connect.getblockcount()
         onchain_peers = rpc_connect.getconnectioncount()
@@ -41,16 +43,14 @@ def index():
     except:
         current_block_height = onchain_peers = onchain_balance = bitcoin_version = sync_prog = chain_type = "Offline!"
 
-     #Lightning RPC Stuff
-
     try: 
         os.environ["GRPC_SSL_CIPHER_SUITES"] = 'HIGH+ECDSA'
-        with open(os.path.expanduser('~/.lnd/data/chain/bitcoin/{}/admin.macaroon'.format(chaintype_ln)), 'rb') as f:
+        with open(os.path.expanduser(lnd_dir_location + 'data/chain/bitcoin/{}/admin.macaroon'.format(chaintype_ln)), 'rb') as f:
             macaroon_bytes = f.read()
             macaroon = codecs.encode(macaroon_bytes, 'hex')
 
 
-        cert = open(os.path.expanduser('~/.lnd/tls.cert'), 'rb').read()
+        cert = open(os.path.expanduser(lnd_dir_location + '/tls.cert'), 'rb').read()
         creds = grpc.ssl_channel_credentials(cert)
         channel = grpc.secure_channel('localhost:10009', creds)
         stub = lnrpc.LightningStub(channel)
@@ -63,6 +63,7 @@ def index():
         lightning_version = response.version[:5]
         alias = response.alias
     except:
+
         lightning_channels_act = lightning_peers = offchain_balance = lightning_version = alias = "Offline!"
 
 
