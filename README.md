@@ -18,8 +18,9 @@ Clone the repo into the directory of your choosing.
 
 `git clone https://github.com/M-D-Br/FlaskBitcoinDashboard.git`
 
-Create the virtual environment.
+Into the folder and create the virtual environment.
 
+`cd FlaskBitcoinDashboard`
 `virtualenv venv`
 
 Activate the virtual environment.
