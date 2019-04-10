@@ -1,27 +1,26 @@
 
 # -*- coding: utf-8 -*- 
 
-from flask import render_template
+from flask import render_template, request
 from app import app
 from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
 import rpc_pb2 as ln
 import rpc_pb2_grpc as lnrpc
 import grpc, os, codecs
 
+#RPC Credentials
+rpc_user = "[RPC USER]"
+rpc_password = "[RPC PASS]"
+rpc_port = [RPC PORT]
+allowed_ip = "[MACHINE IP]"
+#Your Lightning Directory - Don't forget to add a forward slash at the end.
+lnd_dir_location = '[DIRECTORY]'
 
 @app.route('/')
 @app.route('/index')
 def index():
 
-    #RPC Credentials
-    rpc_user = ['your bitcoin rpc username']
-    rpc_password = ['your bitcoin rpc password']
-    rpc_port = ['RPC port']
-    allowed_ip = ['IP of the device']
-    #Your Lightning Directory – don't forget the forward slash at the end
-    lnd_dir_location = '[lnd directory location]'
-
-     try:
+    try:
         rpc_connect = AuthServiceProxy("http://{}:{}@{}:{}".format(rpc_user,rpc_password,allowed_ip,rpc_port))
         current_block_height = rpc_connect.getblockcount()
         onchain_peers = rpc_connect.getconnectioncount()
@@ -70,11 +69,17 @@ def index():
          lightning_peers=lightning_peers, offchain_balance=offchain_balance,
          lightning_version=lightning_version, alias=alias)
 
-@app.route('/peerpage')
+@app.route('/peerpage', methods=['GET', 'POST'])
 def peerpage():
     try:
+        rpc_connect = AuthServiceProxy("http://{}:{}@{}:{}".format(rpc_user,rpc_password,allowed_ip,rpc_port))
+        chain_type = rpc_connect.getblockchaininfo()['chain']
+        if chain_type == "test":
+            chaintype_ln = "testnet"
+        else:
+            chaintype_ln = "mainnet"
         os.environ["GRPC_SSL_CIPHER_SUITES"] = 'HIGH+ECDSA'
-        with open(os.path.expanduser('~/.lnd/data/chain/bitcoin/{}/admin.macaroon'.format(chaintype_ln)), 'rb') as f:
+        with open(os.path.expanduser(lnd_dir_location + 'data/chain/bitcoin/{}/admin.macaroon'.format(chaintype_ln)), 'rb') as f:
             macaroon_bytes = f.read()
             macaroon = codecs.encode(macaroon_bytes, 'hex')
 
@@ -86,6 +91,94 @@ def peerpage():
 
         response = stub.ListPeers(ln.ListPeersRequest(), metadata=[('macaroon', macaroon)])
         show_current_peers = response.peers
+        show_current_peers_list = []
+        for peer in show_current_peers:
+            show_current_peers_list.append(str(peer.pub_key) + "@" + str(peer.address))
+        conn = True
+        length_of = len(show_current_peers_list)
+
     except:
-        show_current_peers = "N/A"
-    return render_template('peerpage.html', show_current_peers=show_current_peers)
+        show_current_peers_list = ["Offline!"]
+        length_of = 0
+        conn = False
+
+    if conn == True:
+      if request.method == 'POST':
+        response_uri = request.get_data()
+        result = response_uri[3:-4].strip()
+        for r in (("%40", "@"), ("%3A", ":")):
+           result = result.replace(*r)
+        def connect(host, port, node_id):
+           addr = ln.LightningAddress(pubkey=node_id, host="{}:{}".format(host, port))
+           req = ln.ConnectPeerRequest(addr=addr, perm=True)
+           stub.ConnectPeer(ln.ConnectPeerRequest(addr=addr,perm=False), metadata=[('macaroon',macaroon)])
+
+        try:
+           nodeid, lnhost, lnport = result[:66], result[67:-5], result[-4:]
+           result = nodeid + ' ' + lnhost + ' ' + lnport
+           connect(lnhost,lnport,nodeid)
+           show_current_peers_list.append(" ")
+           length_of = len(show_current_peers_list)
+           return render_template('peerpage_.html', len=len(show_current_peers_list), show_current_peers=show_current_peers_list, length_of=length_of, result=result)
+
+        except:
+           pass
+
+    return render_template('peerpage_.html', len=len(show_current_peers_list), length_of=length_of, show_current_peers=show_current_peers_list)                 
+
+@app.route('/peerpage_', methods=['POST', 'GET'])
+def peerpage2():
+    try:
+        rpc_connect = AuthServiceProxy("http://{}:{}@{}:{}".format(rpc_user,rpc_password,allowed_ip,rpc_port))
+        chain_type = rpc_connect.getblockchaininfo()['chain']
+        if chain_type == "test":
+            chaintype_ln = "testnet"
+        else:
+            chaintype_ln = "mainnet"
+        os.environ["GRPC_SSL_CIPHER_SUITES"] = 'HIGH+ECDSA'
+        with open(os.path.expanduser(lnd_dir_location + 'data/chain/bitcoin/{}/admin.macaroon'.format(chaintype_ln)), 'rb') as f:
+            macaroon_bytes = f.read()
+            macaroon = codecs.encode(macaroon_bytes, 'hex')
+
+
+        cert = open(os.path.expanduser('~/.lnd/tls.cert'), 'rb').read()
+        creds = grpc.ssl_channel_credentials(cert)
+        channel = grpc.secure_channel('localhost:10009', creds)
+        stub = lnrpc.LightningStub(channel)
+
+        response = stub.ListPeers(ln.ListPeersRequest(), metadata=[('macaroon', macaroon)])
+        show_current_peers = response.peers
+        show_current_peers_list = []
+        for peer in show_current_peers:
+            show_current_peers_list.append(str(peer.pub_key) + "@" + str(peer.address))
+        conn = True
+        length_of = len(show_current_peers_list)
+
+    except:
+        show_current_peers_list = ["Offline!"]
+        length_of = 0
+        conn = False
+
+    if conn == True:
+      if request.method == 'POST':
+        response_uri = request.get_data()
+        result = response_uri[3:-4].strip()
+        for r in (("%40", "@"), ("%3A", ":")):
+           result = result.replace(*r)
+        def connect(host, port, node_id):
+           addr = ln.LightningAddress(pubkey=node_id, host="{}:{}".format(host, port))
+           req = ln.ConnectPeerRequest(addr=addr, perm=True)
+           stub.ConnectPeer(ln.ConnectPeerRequest(addr=addr,perm=False), metadata=[('macaroon',macaroon)])
+
+        try:
+           nodeid, lnhost, lnport = result[:66], result[67:-5], result[-4:]
+           result = nodeid + ' ' + lnhost + ' ' + lnport
+           connect(lnhost,lnport,nodeid)
+           show_current_peers_list.append(" ")
+           length_of = len(show_current_peers_list)
+           return render_template('peerpage_.html', len=len(show_current_peers_list), show_current_peers=show_current_peers_list, length_of=length_of, result=result)
+
+        except:
+           pass
+
+    return render_template('peerpage_.html', len=len(show_current_peers_list), length_of=length_of, show_current_peers=show_current_peers_list)     
