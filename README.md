@@ -21,6 +21,7 @@ Clone the repo into the directory of your choosing.
 Into the folder and create the virtual environment.
 
 `cd FlaskBitcoinDashboard`
+
 `virtualenv venv`
 
 Activate the virtual environment.
