@@ -14,9 +14,13 @@ First up, we'll install virtualenv.
 
 `sudo apt install virtualenv`
 
-Create a directory.
+Clone the repo into the directory of your choosing.
 
-`mkdir dash && cd dash`
+`git clone https://github.com/M-D-Br/FlaskBitcoinDashboard.git`
+
+Create the virtual environment.
+
+`virtualenv venv`
 
 Activate the virtual environment.
 
@@ -42,7 +46,7 @@ Almost there. You need to input your own RPC credentials.
 
 `sudo nano app/backend.py`
 
-Edit the variables <i>rpc_user</i>, <i>rpc_password</i>, <i>rpc_port</i> and <i>allowed_ip</i>.
+Edit the variables: <i>rpc_user</i>, <i>rpc_password</i>, <i>rpc_port</i> and <i>allowed_ip</i>, as well as <i>lnd_dir_location</i>
 
 exit that (CTRL+X, y to save the changes) and export the Flask app.
 
