@@ -3,13 +3,10 @@
 
 from flask import render_template
 from app import app
-import random
 from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
 import rpc_pb2 as ln
 import rpc_pb2_grpc as lnrpc
-import grpc
-import os
-import codecs
+import grpc, os, codecs
 
 
 @app.route('/')
