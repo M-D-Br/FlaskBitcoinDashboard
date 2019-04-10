@@ -18,6 +18,10 @@ Create a directory.
 
 `mkdir dash && cd dash`
 
+Clone the repo.
+
+`git clone https://github.com/M-D-Br/FlaskBitcoinDashboard.git`
+
 Activate the virtual environment.
 
 `source venv/bin/activate`
