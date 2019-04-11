@@ -119,6 +119,7 @@ def peerpage():
            connect(lnhost,lnport,nodeid)
            show_current_peers_list.append(" ")
            length_of = len(show_current_peers_list)
+           result = "Successfully connected!"
            return render_template('peerpage_.html', len=len(show_current_peers_list), show_current_peers=show_current_peers_list, length_of=length_of, result=result)
 
         except:
@@ -176,6 +177,7 @@ def peerpage2():
            connect(lnhost,lnport,nodeid)
            show_current_peers_list.append(" ")
            length_of = len(show_current_peers_list)
+           result = "Successfully connected!"
            return render_template('peerpage_.html', len=len(show_current_peers_list), show_current_peers=show_current_peers_list, length_of=length_of, result=result)
 
         except:
