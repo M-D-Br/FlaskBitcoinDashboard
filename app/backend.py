@@ -84,7 +84,7 @@ def peerpage():
             macaroon = codecs.encode(macaroon_bytes, 'hex')
 
 
-        cert = open(os.path.expanduser('~/.lnd/tls.cert'), 'rb').read()
+        cert = open(os.path.expanduser(lnd_dir_location + 'tls.cert'), 'rb').read()
         creds = grpc.ssl_channel_credentials(cert)
         channel = grpc.secure_channel('localhost:10009', creds)
         stub = lnrpc.LightningStub(channel)
@@ -142,7 +142,7 @@ def peerpage2():
             macaroon = codecs.encode(macaroon_bytes, 'hex')
 
 
-        cert = open(os.path.expanduser('~/.lnd/tls.cert'), 'rb').read()
+        cert = open(os.path.expanduser(lnd_dir_location + 'tls.cert'), 'rb').read()
         creds = grpc.ssl_channel_credentials(cert)
         channel = grpc.secure_channel('localhost:10009', creds)
         stub = lnrpc.LightningStub(channel)
