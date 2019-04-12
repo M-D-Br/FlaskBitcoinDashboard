@@ -104,28 +104,39 @@ def peerpage():
 
     if conn == True:
       if request.method == 'POST':
-        response_uri = request.get_data()
-        result = response_uri[3:-4].strip()
-        for r in (("%40", "@"), ("%3A", ":")):
-           result = result.replace(*r)
-        def connect(host, port, node_id):
-           addr = ln.LightningAddress(pubkey=node_id, host="{}:{}".format(host, port))
-           req = ln.ConnectPeerRequest(addr=addr, perm=True)
-           stub.ConnectPeer(ln.ConnectPeerRequest(addr=addr,perm=False), metadata=[('macaroon',macaroon)])
+        if request.form['action'] == "summary":
+            response_uri = str(request.form['text'])
+            result = response_uri.strip()
 
-        try:
-           nodeid, lnhost, lnport = result[:66], result[67:-5], result[-4:]
-           result = nodeid + ' ' + lnhost + ' ' + lnport
-           connect(lnhost,lnport,nodeid)
-           show_current_peers_list.append(" ")
-           length_of = len(show_current_peers_list)
-           result = "Successfully connected!"
-           return render_template('peerpage_.html', len=len(show_current_peers_list), show_current_peers=show_current_peers_list, length_of=length_of, result=result)
+            def connect(host, port, node_id):
+               addr = ln.LightningAddress(pubkey=node_id, host="{}:{}".format(host, port))
+               req = ln.ConnectPeerRequest(addr=addr, perm=True)
+               stub.ConnectPeer(ln.ConnectPeerRequest(addr=addr,perm=False), metadata=[('macaroon',macaroon)])
+            try:
+               nodeid, lnhost, lnport = result[:66], result[67:-5], result[-4:]
+               connect(lnhost,lnport,nodeid)
+               show_current_peers_list.append(result)
+               length_of = len(show_current_peers_list)
+               result = "Successfully connected!"
+               return render_template('peerpage_.html', len=len(show_current_peers_list), show_current_peers=show_current_peers_list, length_of=length_of, result="SuccessCon")
+            except:
+               return render_template('peerpage_.html', len=len(show_current_peers_list), show_current_peers=show_current_peers_list, length_of=length_of, result="FalseCon")
 
-        except:
-           pass
+        else:
+            response_uri = str(request.form['text'])
+            result = response_uri.strip()
+            def disconnect(pubkey):
+                req = ln.DisconnectPeerRequest(pub_key=pubkey)
+                stub.DisconnectPeer(ln.DisconnectPeerRequest(pub_key=pubkey), metadata=[('macaroon',macaroon)])
+            try:
+                disconnect(result)
+                del show_current_peers_list[-1]
+                length_of = len(show_current_peers_list)
+                return render_template('peerpage_.html', len=len(show_current_peers_list), show_current_peers=show_current_peers_list, length_of=length_of, result="SuccessDis")
+            except:
+                return render_template('peerpage_.html', len=len(show_current_peers_list), show_current_peers=show_current_peers_list, length_of=length_of, result="FalseDis")
 
-    return render_template('peerpage_.html', len=len(show_current_peers_list), length_of=length_of, show_current_peers=show_current_peers_list)                 
+    return render_template('peerpage_.html', len=len(show_current_peers_list), length_of=length_of, show_current_peers=show_current_peers_list)               
 
 @app.route('/peerpage_', methods=['POST', 'GET'])
 def peerpage2():
@@ -162,25 +173,37 @@ def peerpage2():
 
     if conn == True:
       if request.method == 'POST':
-        response_uri = request.get_data()
-        result = response_uri[3:-4].strip()
-        for r in (("%40", "@"), ("%3A", ":")):
-           result = result.replace(*r)
-        def connect(host, port, node_id):
-           addr = ln.LightningAddress(pubkey=node_id, host="{}:{}".format(host, port))
-           req = ln.ConnectPeerRequest(addr=addr, perm=True)
-           stub.ConnectPeer(ln.ConnectPeerRequest(addr=addr,perm=False), metadata=[('macaroon',macaroon)])
+        if request.form['action'] == "summary":
+            response_uri = str(request.form['text'])
+            result = response_uri.strip()
 
-        try:
-           nodeid, lnhost, lnport = result[:66], result[67:-5], result[-4:]
-           result = nodeid + ' ' + lnhost + ' ' + lnport
-           connect(lnhost,lnport,nodeid)
-           show_current_peers_list.append(" ")
-           length_of = len(show_current_peers_list)
-           result = "Successfully connected!"
-           return render_template('peerpage_.html', len=len(show_current_peers_list), show_current_peers=show_current_peers_list, length_of=length_of, result=result)
+            def connect(host, port, node_id):
+               addr = ln.LightningAddress(pubkey=node_id, host="{}:{}".format(host, port))
+               req = ln.ConnectPeerRequest(addr=addr, perm=True)
+               stub.ConnectPeer(ln.ConnectPeerRequest(addr=addr,perm=False), metadata=[('macaroon',macaroon)])
+            try:
+               nodeid, lnhost, lnport = result[:66], result[67:-5], result[-4:]
+               connect(lnhost,lnport,nodeid)
+               show_current_peers_list.append(result)
+               length_of = len(show_current_peers_list)
+               result = "Successfully connected!"
+               return render_template('peerpage.html', len=len(show_current_peers_list), show_current_peers=show_current_peers_list, length_of=length_of, result="SuccessCon")
+            except:
+               return render_template('peerpage_.html', len=len(show_current_peers_list), show_current_peers=show_current_peers_list, length_of=length_of, result="FalseCon")
 
-        except:
-           pass
+        else:
+            response_uri = str(request.form['text'])
+            result = response_uri.strip()
+            def disconnect(pubkey):
+                req = ln.DisconnectPeerRequest(pub_key=pubkey)
+                stub.DisconnectPeer(ln.DisconnectPeerRequest(pub_key=pubkey), metadata=[('macaroon',macaroon)])
+            try:
+                disconnect(result)
+                del show_current_peers_list[-1]
+                length_of = len(show_current_peers_list)
+                result = "Successfully disconnected!"
+                return render_template('peerpage.html', len=len(show_current_peers_list), show_current_peers=show_current_peers_list, length_of=length_of, result="SuccessDis")
+            except:
+                return render_template('peerpage_.html', len=len(show_current_peers_list), show_current_peers=show_current_peers_list, length_of=length_of, result="FalseDis")
 
-    return render_template('peerpage_.html', len=len(show_current_peers_list), length_of=length_of, show_current_peers=show_current_peers_list)     
+    return render_template('peerpage.html', len=len(show_current_peers_list), length_of=length_of, show_current_peers=show_current_peers_list)      
