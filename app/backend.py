@@ -7,6 +7,7 @@ from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
 import rpc_pb2 as ln
 import rpc_pb2_grpc as lnrpc
 import grpc, os, codecs
+from binascii import hexlify
 
 #RPC Credentials
 rpc_user = "[RPC USER]"
