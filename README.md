@@ -1,7 +1,7 @@
 # FlaskBitcoinDashboard
-Python Flask Dashboard made with Bootstrap for watching a Bitcoin node (tried it on Ubuntu, should work on OSX, too). Can be accessed by anyone on the local network, works on both desktop and mobile.
+Python Flask Dashboard made with Bootstrap for managing a Bitcoin node (tried on Ubuntu/OSX). Can be accessed by anyone on the local network and works on both desktop and mobile.
 
-Works with bitcoind/lnd. I may work on a c-lightning version if there's any interest.
+Currently for bitcoind/lnd. I may work on a c-lightning version if there's any interest.
 
 Thanks to <a href="https://github.com/wintercooled">@wintercooled</a> for the inspiration.
 
