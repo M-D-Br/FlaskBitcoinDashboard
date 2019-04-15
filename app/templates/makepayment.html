@@ -1,0 +1,148 @@
+<html>
+	<link href="/static/bootstrap.min.css" rel="stylesheet" media="screen">
+ <!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Payments</title>
+
+  <link href="{{ url_for('static', filename='all.min.css')}}" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito+sans:800" rel="stylesheet">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+    <link href="{{ url_for('static', filename='sb-admin-2.min.css')}}" rel="stylesheet" type="text/css">
+</head>
+
+<body id="page-top">
+    <h1 class="h1 mb-4 mt-4 text-gray-800 text-center">Payments</h1>
+    <div class="container">
+
+    <div class="row justify-content-center">
+
+      <div class="col-xl-10 col-lg-12 col-md-9">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+          <div class="card-body p-0">
+
+            <div class="row">
+              <div class="col-lg-6">
+                 <div class="p-5">
+                  <div>
+                    <h1 class="h4 text-gray-800 mb-2 text-center">Send Bitcoin</h1>
+                      
+                    <h5 class="text-left text-dark">Balance</h5><h6 class="text-right">{{onchain_balance}}</h6>
+                    <h5 class="text-left text-dark">Send:</h5>
+                      <form action="{{url_for('makepayment')}}" method="POST">
+                          <div class="form-group mb-0">
+                            <input name="address" class="form-control text-center mb-2" placeholder="Address">
+                            <input name="amt" class="form-control w-50 text-center mb-2" placeholder="Amount (₿)">
+
+                            </div>
+                          <div class="custom-control custom-radio">
+                            <input type="radio" id="highfee" name="fee" class="custom-control-input" value="medfee">
+                            <label class="custom-control-label text-success" for="highfee">~2 block confirmation</label>
+                          </div>
+                          <div class="text-right"><small>Fee: {{ fasttxrate }}</small></div>
+
+                          <div class="custom-control custom-radio">
+                            <input type="radio" id="medfee" name="fee" class="custom-control-input" value="medfee" checked>
+                            <label class="custom-control-label text-secondary" for="medfee">~6 block confirmation</label>   
+                          </div>
+                          <div class="text-right"><small>Fee: {{ medtxrate }}</small></div>
+                          
+                          <div class="custom-control custom-radio">
+                            <input type="radio" id="lowfee" name="fee" class="custom-control-input" value="lowfee">
+                            <label class="custom-control-label text-warning" for="lowfee">~12 block confirmation</label>   
+                          </div>
+                          <div class="text-right"><small>Fee: {{ slowtxrate }}</small></div>
+                          <button type="submit" name="action" value="sendbutton" class="btn btn-primary btn-user btn-block mb-2 mt-2 form-group font-weight-bold text-white text-uppercase">Send</button>
+                     </form> 
+                          
+                  </div>
+                  
+                </div>
+                
+                
+                </div>
+              <div class="col-lg-6">
+                <div class="p-5">
+                  <div class="text-center">
+                    <h1 class="h4 text-gray-800 mb-2">Send Sats</h1>
+                    <h5 class="text-left text-dark">Balance</h5><h6 class="text-right">{{offchain_balance}}</h6>
+                    <h5 class="text-left text-dark">Paste invoice:</h5>
+                  </div>
+                <form action="{{url_for('makepayment')}}" method="POST">
+                    <div class="form-group mb-0">
+
+                 <input placeholder="Invoice" name="reqtext" class="form-control form-control-user form-group user text-center mb-2">
+
+                    </div>
+                 <button type="submit"  name="action" value="decodereq" class="btn btn-primary btn-user btn-block mb-2 form-group font-weight-bold text-white text-uppercase">Decode</button>
+                 {%if switch == True %}
+                    
+                <div class="card-body border-left-primary shadow py-2 mt-1 mb-3">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                    <p class="mb-0"><span class="text-primary">Description:</span> {{ req_desc }}</p>
+                    <p class="mb-0"><span class="text-primary">Amount:</span> {{ req_amt }}</p>
+                    <p class="mb-0"><span class="text-primary">Recipient:</span> <small>{{ req_to }}</small></p>
+                    </div>
+                  </div>
+                </div>
+                 <button type="submit" name="action" value="confirmbutton" class="btn btn-success btn-user btn-block mt-1 form-group font-weight-bold text-white text-uppercase">Confirm</button>
+
+                </form>
+                {% elif switch == False %}
+                 <p class="alert alert-warning text-center">Couldn't decode request.</p>
+                 {% else %}
+                 {%endif%}                    
+                {%if successfultx == True %}
+                    <p class="alert alert-success">Sent! Txid: {{ txid }} </p>
+                {% elif successfultx == "N/A" %}
+                {% else %}
+                    <p class="alert alert-warning text-center">Something went wrong.</p>
+                {%endif%}
+                {% if successln == True %}
+                    <p class="alert alert-success">Sent! Preimage: {{ preimage }} </p>
+                {% elif successln == False %}
+                    <p class="alert alert-warning text-center">{{ error }}</p>
+                {%endif%}
+                </div>
+              </div>
+              
+            </div>
+        </div>
+
+      </div>
+
+    </div>
+        </div>
+  </div>
+               
+
+
+    <div class="container-fluid">
+  <div class="row">
+        <div class="col-md-6">
+			<a type="button" class="btn btn-danger btn-block stretched-link font-weight-bold text-white text-uppercase mb-3" href="{{url_for('makepayment')}}">Kill Hanging Process</a>
+    	</div>
+      <div class="col-md-6">
+			<a type="button" class="btn btn-primary btn-block stretched-link font-weight-bold text-white text-uppercase mb-3" href="{{ url_for('peerpage')}}">Lightning Peers</a>
+    	</div>
+       <div class="col-md-6">
+    		<a type="button" class="btn btn-success btn-block stretched-link font-weight-bold text-white text-uppercase mb-3" href="{{ url_for('index')}}">Home</a>
+    	</div>
+       <div class="col-md-6">
+    		<a type="button" class="btn btn-warning btn-block stretched-link font-weight-bold text-white text-uppercase mb-3">Manage Channels</a>
+    	</div>
+  </div>
+</div>
+</body>
+</html>
