@@ -8,6 +8,7 @@ Thanks to <a href="https://github.com/wintercooled">@wintercooled</a> for the in
 
 ![Imgur](https://i.imgur.com/lwOoCuW.png)
 ![Imgur](https://i.imgur.com/4RUznHn.png)
+![Imgur](https://i.imgur.com/cEHep9F.png)
 
 
 First up, we'll install virtualenv.
