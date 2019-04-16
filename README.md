@@ -61,6 +61,8 @@ Voila! To run the server:
 
 Go to any web browser on your network and enter the IP address of the node + port 5000, i.e. `192.168.1.1:5000`
 
+Alternatively, you can specify a port by running `flask run --host=0.0.0.0 --port=[number]`
+
 CTRL + C to close the server.
 
 Let me know if you have any issues or suggestions.
