@@ -29,11 +29,13 @@ Activate the virtual environment.
 
 `source venv/bin/activate`
 
-Download Flask and the Bitcoin RPC tools.
+Download Flask, the Bitcoin RPC tools and a QR code module.
 
 `pip install flask`
 
 `pip install python-bitcoinrpc`
+
+`pip install pyqrcode`
 
 Now for the Lightning part (based off <a href="https://dev.lightning.community/guides/python-grpc/">this guide</a>).
 
