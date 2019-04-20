@@ -21,32 +21,70 @@
 </head>
 
 <body id="page-top">
-    <h1 class="h1 mb-4 mt-4 text-gray-800 text-center">Peers</h1>
-    <div class="container">
+    <h1 class="h1 mb-4 mt-2 text-gray-800 text-center">Peers</h1>
+    <div class="container-fluid">
 
     <div class="row justify-content-center">
 
-      <div class="col-xl-10 col-lg-12 col-md-9">
+      <div class="col-xl-12 col-lg-12 col-md-9">
 
-        <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card o-hidden border-0 shadow-lg my-2">
           <div class="card-body p-0">
 
             <div class="row">
-              <div class="col-lg-6">
+              <div class="col-lg-8">
                  <div class="p-5">
                   <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-2">Connected Peers</h1>
-                    <div class="mb-4 pre-scrollable">{%for i in range(0, len)%} 
-  
-                        <div class="mb-4">{{show_current_peers[i]}}</div>
-{%endfor%} </div>
+                 <h1 class="h4 text-gray-900 mb-4">Connected Peers<span class="text-secondary"> {{ length_of }}</span></h1>
+                        {% if conn == True %}
+
+                    <div class="mb-4 pre-scrollable mx-2 border rounded-sm">
+
+                        {% for i in range(0,length_of)%}
+                        <div class="card border-left-success shadow py-2 mb-1">
+                        <div class="card-body">
+                        <h5 class="text-left text-dark">Pubkey</h5><p class="text-right">{{ show_current_peers[i][0] }}</p>
+                        {% if show_current_peers[i][1] == True %}
+                        <div class="text-right">
+                        <button class="btn btn-success btn-icon-split btn-sm p-1">
+                            <span class="text-white font-weight-bold">Channel Open</span>
+                        </button>
+                        </div>
+                        {%else%}
+                        <div class="text-right">
+                        <button class="btn btn-warning btn-icon-split btn-sm p-1">
+                            <span class="text-white font-weight-bold">No Channel</span>
+                        </button>
+                        </div>
+                        {%endif%}
+                        </div>
+
+                        </div>
+                        {%endfor%}
+                      </div>
+                        {% else %}
+                       <div>
+                        <div class="mb-4 mx-2">
+                        <div class="card border-left-warning shadow py-2 mb-1">
+                        <div class="card-body">
+                        <h5 class="text-center text-dark">Offline!</h5>
+                        </div>
+                         
+                        </div>
+                        
+                        </div>
+                       </div>
+                        {%endif%}
+
+                      
+                      </div>
+
                   </div>
                   
                 </div>
                 
-                
-                </div>
-              <div class="col-lg-6">
+            
+              <div class="col-lg-4">
                 <div class="p-5">
                   <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-2">Manage Peers</h1>
@@ -69,7 +107,6 @@
                 {%elif result == "SuccessCon" %}
 <p class="alert alert-success">Successfully connected!</p>
                 {%endif%}
-                <p class="mb-4 text-center mt-5">Currently connected to {{ length_of }} peer(s).</p>
                 </div>
               </div>
             </div>
@@ -96,7 +133,7 @@
     		<a type="button" class="btn btn-success btn-block stretched-link font-weight-bold text-white text-uppercase mb-3" href="{{ url_for('index')}}">Home</a>
     	</div>
        <div class="col-md-6">
-    		<a type="button" class="btn btn-warning btn-block stretched-link font-weight-bold text-white text-uppercase mb-3">Manage Channels</a>
+    		<a type="button" class="btn btn-warning btn-block stretched-link font-weight-bold text-white text-uppercase mb-3" href="{{url_for('channelpage')}}">Manage Channels</a>
     	</div>
   </div>
 </div>
