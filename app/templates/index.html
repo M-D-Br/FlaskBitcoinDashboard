@@ -26,7 +26,7 @@
         <div class="container-fluid">
 
 
-            <h1 class="h1 mb-4 mt-4 text-gray-800 text-center">Bitcoin</h1>
+            <h1 class="h1 mb-4 mt-2 text-gray-800 text-center">Bitcoin</h1>
 
 
           <div class="row">
@@ -195,6 +195,21 @@
                 </div>
               </div>
             </div>
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-primary shadow py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Alias</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ alias }}</div>
+                    </div>
+                    <div class="col-auto">
+                      <img src="static/img/alias.png">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>          
         </div>
       </div>
@@ -210,7 +225,7 @@
     		<a type="button" class="btn btn-success btn-block stretched-link font-weight-bold text-white text-uppercase mb-3" href="{{ url_for('peerpage')}}">Lightning Peers</a>
     	</div>
        <div class="col-md-6">
-    		<button type="button" class="btn btn-warning btn-block stretched-link font-weight-bold text-white text-uppercase mb-3">Manage Channels</button>
+    		<a type="button" class="btn btn-warning btn-block stretched-link font-weight-bold text-white text-uppercase mb-3" href="{{ url_for('channelpage')}}">Manage Channels</a>
     	</div>
   </div>
 </div>
