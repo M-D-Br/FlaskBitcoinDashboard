@@ -6,10 +6,11 @@ Currently for bitcoind/lnd. I may work on a c-lightning version if there's any i
 Thanks to <a href="https://github.com/wintercooled">@wintercooled</a> for the inspiration.
 
 
-![Imgur](https://i.imgur.com/lwOoCuW.png)
+![Imgur](https://i.imgur.com/rkNKOCt.png)
 ![Imgur](https://i.imgur.com/4RUznHn.png)
 ![Imgur](https://i.imgur.com/cEHep9F.png)
-
+![Imgur](https://i.imgur.com/tKdHi9K.png)
+![Imgur](https://i.imgur.com/vRdzzps.png)
 
 First up, we'll install virtualenv.
 
