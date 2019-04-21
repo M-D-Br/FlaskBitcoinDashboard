@@ -244,10 +244,12 @@ def channelpage():
               except:
                 return render_template('channels.html', availablefunds=availablefunds, channelidentifiers=channelidentifiers, closedchannelidentifiers=closedchannelidentifiers,
                  outcap=outcap, incap=incap, conn=conn, closed="couldntclose", length_of=length_of, length_of_closed=length_of_closed, pendingchannelidentifiers=pendingchannelidentifiers, length_of_pending=length_of_pending)
-
-
-    return render_template('channels.html', conn=conn, length_of=length_of, channelidentifiers=channelidentifiers, closedchannelidentifiers=closedchannelidentifiers, incap=incap,
+      else:
+        return render_template('channels.html', conn=conn, length_of=length_of, channelidentifiers=channelidentifiers, closedchannelidentifiers=closedchannelidentifiers, incap=incap,
      outcap=outcap, availablefunds=availablefunds, length_of_closed=length_of_closed, pendingchannelidentifiers=pendingchannelidentifiers, length_of_pending=length_of_pending)
+
+    return render_template('channels.html', conn=conn, length_of=0, channelidentifiers=0, closedchannelidentifiers=0, incap=0,
+     outcap=0, availablefunds=0, length_of_closed=0, pendingchannelidentifiers=0, length_of_pending=0)
 
 @app.route('/makepayment', methods=['POST', 'GET'])
 def makepayment():
